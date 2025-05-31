@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from "react";
+import { useState, useLayoutEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -9,13 +9,19 @@ import {
 } from "react-native";
 import Ionicicons from "react-native-vector-icons/Ionicons";
 import FavouriteButton from "../componenets/FavouriteButton";
+import FavouriteProvider, {
+  FavouriteContext,
+} from "../store/Context/FavouriteContext";
 
 const MealDetailScreen = ({ route, navigation }) => {
+  const FavContext = useContext(FavouriteContext);
   const [isShow, setShow] = useState(true);
-  const [isFav, setIsFav] = useState(false);
+
   //   console.log(`${JSON.stringify(route.params.meal.title)}`);
   const meal = route.params.meal;
   //   console.log(`MEAL : ${meal.title}`);
+  console.log(`MEAL ID : ${meal.id}`);
+  const isFav = FavContext.ids.includes(meal.id);
   const mealTitel = meal.title;
 
   useLayoutEffect(() => {
@@ -33,10 +39,11 @@ const MealDetailScreen = ({ route, navigation }) => {
   }
 
   function toggleFav() {
-    setIsFav((prevState) => !prevState);
     if (isFav) {
+      FavContext.removeFavourite(meal.id);
       console.log(`Meal ${meal.title} is removed from fav`);
     } else {
+      FavContext.addFavourite(meal.id);
       console.log(`Meal ${meal.title} is added to fav`);
     }
   }
