@@ -8,6 +8,8 @@ import MealDetail from "./screens/MealDetailsScreen";
 import { StatusBar } from "expo-status-bar";
 import FavouriteScreen from "./screens/FavouriteScreen";
 import FavouriteProvider from "./store/Context/FavouriteContext";
+import { Provider } from "react-redux";
+import { store } from "./store/redux/store";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -48,7 +50,8 @@ function DrawerNavigation() {
 }
 export default function App() {
   return (
-    <FavouriteProvider>
+    // <FavouriteProvider>
+    <Provider store={store}>
       <>
         <StatusBar style="light" />
         <NavigationContainer>
@@ -79,6 +82,7 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
       </>
-    </FavouriteProvider>
+    </Provider>
+    /* </FavouriteProvider> */
   );
 }

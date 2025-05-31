@@ -12,16 +12,19 @@ import FavouriteButton from "../componenets/FavouriteButton";
 import FavouriteProvider, {
   FavouriteContext,
 } from "../store/Context/FavouriteContext";
+import { useSelector, useDispatch } from "react-redux";
+import { addFavourite, removeFavourite } from "../store/redux/favourites";
 
 const MealDetailScreen = ({ route, navigation }) => {
-  const FavContext = useContext(FavouriteContext);
-  const [isShow, setShow] = useState(true);
+  //   const FavContext = useContext(FavouriteContext); //for Context API
 
-  //   console.log(`${JSON.stringify(route.params.meal.title)}`);
+  const [isShow, setShow] = useState(true);
+  const favouriteids = useSelector((state) => state.favMeals.ids); //for Redux
+  const dispatch = useDispatch();
   const meal = route.params.meal;
-  //   console.log(`MEAL : ${meal.title}`);
   console.log(`MEAL ID : ${meal.id}`);
-  const isFav = FavContext.ids.includes(meal.id);
+  //   const isFav = FavContext.ids.includes(meal.id); //using Context API
+  const isFav = favouriteids.includes(meal.id); //using REdux
   const mealTitel = meal.title;
 
   useLayoutEffect(() => {
@@ -40,10 +43,12 @@ const MealDetailScreen = ({ route, navigation }) => {
 
   function toggleFav() {
     if (isFav) {
-      FavContext.removeFavourite(meal.id);
+      dispatch(removeFavourite({ id: meal.id })); //Redux Toolkit
+      //   FavContext.removeFavourite(meal.id); //Context API
       console.log(`Meal ${meal.title} is removed from fav`);
     } else {
-      FavContext.addFavourite(meal.id);
+      dispatch(addFavourite({ id: meal.id })); //Redux ToolKit
+      //   FavContext.addFavourite(meal.id); //Context API
       console.log(`Meal ${meal.title} is added to fav`);
     }
   }
