@@ -3,11 +3,18 @@ import { useContext } from "react";
 import {FavouriteContext} from "../store/Context/FavouriteContext";
 import { MEALS } from "../data/dummy-data";
 import MealItem from "../componenets/MealItem";
+import { useDispatch,useSelector} from "react-redux";
 
 const FavouriteScreen = () => {
-  const favContext = useContext(FavouriteContext);
-  const MealIds = favContext.favouriteids;
-  const favMeals = MEALS.filter((meal) => favContext.ids.includes(meal.id));
+    const dispatcher = useDispatch();
+    
+//   const favContext = useContext(FavouriteContext); //Context API
+//   const MealIds = favContext.favouriteids; //Context API
+    //   const favMeals = MEALS.filter((meal) => favContext.ids.includes(meal.id));
+    
+    const MealIds = useSelector((state) => state.favMeals.ids);
+    const favMeals = MEALS.filter((meal) => MealIds.includes(meal.id));
+
   return (
     <View style={styles.container}>
       <FlatList
